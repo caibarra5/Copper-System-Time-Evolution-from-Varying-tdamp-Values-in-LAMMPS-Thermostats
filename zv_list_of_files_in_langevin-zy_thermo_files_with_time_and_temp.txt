@@ -1,0 +1,14 @@
+aa_copy_dump_file_for_cleaning.bash
+ab_clean_dump_file_copy.bash
+a_compile_main_temp_avg.cpp.bash
+ac_plot_time_vs_temp_with_horizontal_line_for_last_n_data_points.R
+ca_clean_all__Cu_dot_dat_files.bash
+cb_plot_all_thermo_info_files_with_ac.bash
+cc_display_all_.jpg_files.bash
+c_run_b_..._with_dot_dat_file_here.bash
+da_run_ca_and_cb_for_full_analysis.bash
+list_of_thermo_info_files.txt
+main_temp_avg.cpp
+tdamps.txt
+temperatures.txt
+xa_testing_of_ac.R

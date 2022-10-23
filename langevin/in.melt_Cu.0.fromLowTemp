@@ -1,0 +1,57 @@
+#----------------- Define Variables ------------------
+variable dt equal "10^-3" # The time step is in the scale of femtoseconds
+
+#--------------- Initialize Simulation --------------------
+units   metal
+atom_style      atomic
+boundary        p p p
+
+lattice fcc ${a} 
+region  box block 0 4 0 4 0 4
+create_box      1 box
+create_atoms    1 box
+mass    1 63.546
+
+#--------------- Potential Used -----------------------
+pair_style      eam/alloy
+pair_coeff      * * Cu01.eam.alloy Cu
+
+# -------------- Minimize the Potential Energy ----------------
+#minimize        1.0e-8 1.0e-8 1000 100000
+#min_style       cg
+
+# ---------------- Initialize Equilibration Temperature and Temperature Needed -----------------------
+variable temp_equi equal ${temp}
+variable temp_need equal 2*${temp}
+timestep ${dt}
+#velocity all create ${temp_need} 454883 mom yes rot yes dist gaussian
+
+# --------------- Custom print to files to plot easier ------------------
+print "1_Time 2_Temperature 3_lx 4_ly 5_lz" file ua_arrangement_of_thermo_info_columns.txt
+
+variable v1 equal "time"
+variable v2 equal "temp"
+variable v3 equal "vol/atoms"
+variable v4 equal "press/10000"
+variable v5 equal "etotal/atoms"
+variable v6 equal "pe/atoms"
+variable v7 equal "ke/atoms"
+variable v8 equal "atoms"
+variable v9  equal "lx"
+variable v10  equal "ly"
+variable v11  equal "lz"
+
+print "number of atoms = ${v8}"
+fix thermo_info all print ${k} "${v1} ${v2} ${v9} ${v10} ${v11} ${v8}" file thermo_info_${temp_equi}K_${a}A_every_${k}_steps_n_${n}_tdmp_${tdmp}_langevin_Cu.dat screen yes
+
+#----------------- Run Simulation -------------------
+
+#restart ${n} restart_from_last_run
+
+fix 1 all langevin ${lowTemp} ${temp} ${tdmp} 699483
+fix 2 all nve
+dump id  all custom ${l} dump_every_${l}_${temp}K_${v8}_atoms_fcc_${a}A_n_${n}_tdmp_${tdmp}_langevin.Cu id xu yu zu vx vy vz
+run    ${n} 
+unfix 1
+unfix 2
+unfix thermo_info

@@ -1,0 +1,2 @@
+Sum of wall-clock times for each run: 
+0 hours, 57 minutes and 49    seconds

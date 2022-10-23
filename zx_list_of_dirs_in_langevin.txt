@@ -1,0 +1,3 @@
+.
+zy_thermo_files_with_time_and_temp
+zz_dump_files
